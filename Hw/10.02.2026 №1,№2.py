@@ -20,20 +20,19 @@
 
 
 class Rectangle:
-    def __init__(self, ygol1, ygol2):
-        x1, y1 = ygol1
-        x2, y2 = ygol2
-        self.width = abs(x1 - x2)
-        self.height = abs(y1 - y2)
-        self.left_x = min(x1, x2)
-        self.high_y = max(y1, y2)
+    def __init__(self, corner1, corner2):
+        self.x1,self.y1 = corner1
+        self.x2, self.y2 = corner2
+        self.left = min(self.x1, self.x2)
+        self.right = max(self.x1, self.x2)
+        self.down = min(self.y1, self.y2)
+        self.top = max(self.y1, self.y2)
 
     def perimeter(self):
-        self.gip = (self.width ** 2 + self.height ** 2) **0.5
-        return self.gip + self.width + self.height
+        return (self.width + self.height) * 2
     
     def area(self):
-        return (self.height * self.width)//2
+        return (self.height * self.width) // 2
     
     def get_pos(self):
         return (self.left_x, self.high_y)
@@ -46,8 +45,22 @@ class Rectangle:
         self.high_y += dy
 
     def resize(self, width, height):
-        self.width = width
-        self.height = height
+        c_left = self.left
+        c_top = self.top
+        self.right = c_left + width
+        self.down = c_top - height
+        self.x1 = self.left
+        self.y1 = self.top
+        self.x2 = self.right
+        self.y2 = self.down
+    
+    def turn(self):
+        new_width = self.height
+        new_height = self.width
+        self.left_x = new_width
+        self.high_y = new_height
+        self.width = new_width
+        self.height = new_height
 
 
 rectangle1 = Rectangle((2 , 0), (1 , 0))
@@ -55,3 +68,6 @@ print(rectangle1.perimeter())
 print(rectangle1.area())
 print(rectangle1.get_pos())
 print(rectangle1.get_size())
+rectangle1.resize(5)
+print(rectangle1.get_pos())
+print(rectangle1.perimeter())
